@@ -25,14 +25,15 @@ def complete(id):
     task = Tasks.query.filter_by(id=id).first() #we want the first one and query is to find from general tasks    
     task.completed = True
     db.session.commit()
-    return f"Task {id} is now complete"
+    return redirect(url_for("home"))
+
 
 @app.route("/incomplete/<int:id>")
 def incomplete(id):
     task = Tasks.query.filter_by(id=id).first() #we want the first one and query is to find from general tasks    
     task.completed = False
     db.session.commit()
-    return f"Task {id} is now incomplete"
+    return redirect(url_for("home"))
 
 @app.route("/update/<int:id>", methods=["GET", "POST"])
 def update(id):
@@ -45,7 +46,7 @@ def update(id):
     
     return render_template("update.html", form=form, title="Update Task", task=task)
 
-@app.route("/delete/<int:id>", methods=["GET", "POST"])
+@app.route("/delete/<int:id>")
 def delete(id):
     task = Tasks.query.filter_by(id=id).first()
     db.session.delete(task)
